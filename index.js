@@ -1,14 +1,9 @@
-const express = require('express')
-const bodyParser =require('body-parser')
-
+const app = require('./app')
 const db = require('./db')
-const server = require('./server')
+const router = require('./router')
 
-const app = express()
-app.use(bodyParser.json())
-
-server(app)
+router(app)
 
 app.listen(3000, () => {
-  console.log('redis-node server listening on port 3000')
+  console.log('-'.repeat(80), '\nredis-node server listening on port 3000')
 })
