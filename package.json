@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "clean": "prettier --write --config ./.prettierrc --ignore-path ./.prettierignore ./*.js"
+    "dev": "nodemon src/index.js",
+    "clean": "prettier --write --config ./.prettierrc --ignore-path ./.prettierignore ./src/*.js"
   },
   "keywords": [],
   "author": "",
