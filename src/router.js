@@ -1,4 +1,3 @@
-const User = require('./models/user')
 const AuthController = require('./controllers/authentication')
 
 module.exports = app => {
@@ -6,5 +5,6 @@ module.exports = app => {
     res.send('youve reached the redis-node test server')
   })
 
-  app.post('/users', AuthController.signUp)
+  app.post('/signin', AuthController.signIn)
+  app.post('/signup', AuthController.signUp)
 }

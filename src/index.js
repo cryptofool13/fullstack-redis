@@ -1,5 +1,6 @@
+require('./db')
+require('./redis-client')
 const app = require('./app')
-const db = require('./db')
 const router = require('./router')
 
 router(app)
