@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose')
 
-const Post = new Schema({
+const Tweet = new Schema({
   author: {
     type: String,
     required: true,
@@ -17,4 +17,4 @@ const Post = new Schema({
   },
 })
 
-module.exports = model('post', Post)
+module.exports = model('tweet', Tweet)

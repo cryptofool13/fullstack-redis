@@ -1,12 +1,11 @@
 const { sign } = require('jsonwebtoken')
 
-const User = require('../models/user')
+const { User } = require('../models')
 
-const generateToken = (payload) => sign({ payload }, 'averysecretkey')
-
+const generateToken = payload => sign({ payload }, 'averysecretkey')
 
 exports.signUp = (req, res) => {
-  const { username, password } = req.body
+  let  { username, password } = req.body
   if (!username || !password) {
     res.status(400).send({ error: 'must submit a username and password' })
   } else {
@@ -31,7 +30,7 @@ exports.signUp = (req, res) => {
 }
 
 exports.signIn = (req, res) => {
-  const { username, password } = req.body
+  let { username, password } = req.body
   if (!username || !password) {
     return res
       .status(400)
