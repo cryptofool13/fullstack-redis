@@ -1,28 +1,57 @@
 const { verify } = require('jsonwebtoken')
 
-const { User } = require('../models')
+const { User, Tweet } = require('../models')
 
 function getUserFromToken(token) {
-  let id = verify(token, 'averysecretkey').payload
+  let id
+  try {
+    id = verify(token, 'averysecretkey').payload
+  } catch (err) {
+    return { error: err }
+  }
 
-  return User.findById(id)
+  return id
 }
 
 exports.postTweet = (req, res) => {
-  let { author, content } = req.body
   let token = req.header('authorization')
   if (!token) {
-    res.status(401).send({ error: 'unauthorized access' })
+    return res.status(401).send({ error: 'unauthorized access' })
   }
-  getUserFromToken(token).then(user => {
-    res.send(user)
-  })
-  // get token from req.header
-  // parse token and extract user id
-  // get user from db and handle errors
-  // get tweet components from req.body
-  // handle input errors
-  // create tweet and save to db.
-  // add tweet id to user.tweets
-  // update user document
+  let userId = getUserFromToken(token)
+  if (userId.error) {
+    return res.status(401).send({ error: 'authorization failed' })
+  }
+
+  User.findById(userId).then(
+    user => {
+      if (!user) {
+        return res.status(500).send({ error: 'user not found' })
+      }
+      let { content } = req.body
+      if (!content) {
+        return res
+          .status(401)
+          .send({ error: 'tweet must have author and content' })
+      }
+      const tweet = new Tweet({ content, author: userId})
+      tweet.save().then(
+        newTweet => {
+          // tweet saved
+          let tweetId = newTweet._id
+          User.findByIdAndUpdate(user._id, {
+            tweets: user.tweets.concat(tweetId),
+          }).then(() => {
+            res.send({ message: 'tweet posted' })
+          })
+        },
+        err => {
+          res.status(500).send({ error: err.message })
+        }
+      )
+    },
+    err => {
+      return res.status(401).send({ error: err.message })
+    }
+  )
 }

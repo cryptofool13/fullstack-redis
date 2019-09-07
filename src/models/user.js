@@ -4,6 +4,10 @@ const User = new Schema({
   username: {
     type: String,
     required: true,
+  },
+  handle: {
+    type: String,
+    required: true,
     unique: true,
   },
   password: {

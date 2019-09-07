@@ -5,11 +5,11 @@ const { User } = require('../models')
 const generateToken = payload => sign({ payload }, 'averysecretkey')
 
 exports.signUp = (req, res) => {
-  let  { username, password } = req.body
-  if (!username || !password) {
-    res.status(400).send({ error: 'must submit a username and password' })
+  let  { username, handle, password } = req.body
+  if (!username || !handle || !password) {
+    res.status(400).send({ error: 'must submit a username, handle and password' })
   } else {
-    const newUser = new User({ username, password })
+    const newUser = new User({ username, handle, password })
     newUser.save().then(
       user => {
         if (!user) {
