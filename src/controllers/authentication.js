@@ -1,6 +1,7 @@
 const { sign } = require('jsonwebtoken')
 
 const { User } = require('../models')
+const { saveUser } = require('../controllers/actions/tweet')
 
 const generateToken = payload => sign({ payload }, 'averysecretkey')
 
@@ -45,6 +46,7 @@ exports.signIn = (req, res) => {
           return res.status(400).send({ error: 'incorrect password' })
         } else {
           const token = generateToken(user._id)
+          saveUser(user)
           return res.send({ token })
         }
       },
