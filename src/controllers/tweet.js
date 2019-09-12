@@ -1,5 +1,6 @@
 const { verify } = require('jsonwebtoken')
 
+const { saveTweetHome } = require('./actions/tweet')
 const { User, Tweet } = require('../models')
 
 function getUserFromToken(token) {
@@ -34,11 +35,12 @@ exports.postTweet = (req, res) => {
           .status(401)
           .send({ error: 'tweet must have author and content' })
       }
-      const tweet = new Tweet({ content, author: userId})
+      const tweet = new Tweet({ content, author: userId })
       tweet.save().then(
         newTweet => {
           // tweet saved
           let tweetId = newTweet._id
+          saveTweetHome(newTweet)
           User.findByIdAndUpdate(user._id, {
             tweets: user.tweets.concat(tweetId),
           }).then(() => {

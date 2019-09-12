@@ -1,14 +1,20 @@
 const { sign } = require('jsonwebtoken')
 
 const { User } = require('../models')
-const { saveUser } = require('../controllers/actions/tweet')
+const {
+  saveUser,
+  isUserSaved,
+  saveTweetHome,
+} = require('../controllers/actions/tweet')
 
 const generateToken = payload => sign({ payload }, 'averysecretkey')
 
 exports.signUp = (req, res) => {
-  let  { username, handle, password } = req.body
+  let { username, handle, password } = req.body
   if (!username || !handle || !password) {
-    res.status(400).send({ error: 'must submit a username, handle and password' })
+    res
+      .status(400)
+      .send({ error: 'must submit a username, handle and password' })
   } else {
     const newUser = new User({ username, handle, password })
     newUser.save().then(
@@ -46,7 +52,10 @@ exports.signIn = (req, res) => {
           return res.status(400).send({ error: 'incorrect password' })
         } else {
           const token = generateToken(user._id)
-          saveUser(user)
+          if (!isUserSaved(user)) {
+            saveUser(user)
+          }
+
           return res.send({ token })
         }
       },
