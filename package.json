@@ -1,0 +1,25 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "clean": "prettier --write --config ./.prettierrc --ignore-path ./.prettierignore ./src/*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.12",
+    "mysql2": "^1.7.0",
+    "redis": "^2.8.0",
+    "sequelize": "^5.18.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.2"
+  }
+}
