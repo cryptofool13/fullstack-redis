@@ -16,9 +16,11 @@ exports.signUp = (req, res) => {
       .status(400)
       .send({ error: 'must submit a username, handle and password' })
   } else {
-    model.User.create({ handle, username, password }).then(user => {
-      res.send({ userid: user.id })
-    })
+    model.User.create({ handle, username, password })
+      .then(user => {
+        res.send({ userid: user.id })
+      })
+      .catch(e => res.send(e.errors[0].message))
     // const newUser = new User({ username, handle, password })
     // newUser.save().then(
     //   user => {

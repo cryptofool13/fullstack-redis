@@ -38,10 +38,12 @@ User.init(
     username: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
     handle: {
       type: Sequelize.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: Sequelize.STRING,
@@ -54,7 +56,7 @@ User.init(
   }
 )
 
-User.sync({ force: true }).then(() => {
+User.sync({ force: false }).then(() => {
   console.log('users synced')
 })
 
